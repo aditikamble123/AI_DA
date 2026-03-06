@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Analyst</title>
+    <meta name="description" content="Upload any CSV dataset and get instant AI-powered analysis — no API keys required.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PapaParse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <!-- Main Application -->
+    <div class="app-container">
+        <header class="navbar glass-panel">
+            <div class="logo">
+                <i class="fa-solid fa-chart-pie logo-icon"></i>
+                <h1>AI Data Analyst</h1>
+                <span class="offline-badge"><i class="fa-solid fa-lock"></i> 100% Local</span>
+            </div>
+            <div class="nav-actions">
+                <button id="reset-btn" class="btn icon-btn" title="Load new dataset"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Panel: Data & Upload -->
+            <section class="data-panel glass-panel">
+                <div id="upload-section" class="upload-zone">
+                    <input type="file" id="file-input" accept=".csv" class="hidden">
+                    <label for="file-input" class="upload-label">
+                        <div class="upload-icon-wrapper">
+                            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        </div>
+                        <h3>Upload your dataset</h3>
+                        <p>Drag and drop a <strong>.csv</strong> file here, or click to browse</p>
+                        <span class="upload-hint">No API key. No internet. 100% private.</span>
+                    </label>
+                </div>
+
+                <div id="data-preview-section" class="data-preview hidden">
+                    <!-- Tabs -->
+                    <div class="tab-bar">
+                        <button class="tab-btn active" data-tab="table"><i class="fa-solid fa-table"></i> Data</button>
+                        <button class="tab-btn" data-tab="stats"><i class="fa-solid fa-chart-bar"></i> Statistics</button>
+                        <button class="tab-btn" data-tab="chart"><i class="fa-solid fa-chart-line"></i> Chart</button>
+                    </div>
+
+                    <!-- Table Tab -->
+                    <div id="tab-table" class="tab-content active">
+                        <div class="preview-header">
+                            <span id="file-info" class="file-info-tag"></span>
+                            <span id="row-count" class="badge">0 rows</span>
+                        </div>
+                        <div class="table-container">
+                            <table id="data-table">
+                                <thead id="table-head"></thead>
+                                <tbody id="table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Stats Tab -->
+                    <div id="tab-stats" class="tab-content hidden">
+                        <div id="stats-grid" class="stats-grid"></div>
+                    </div>
+
+                    <!-- Chart Tab -->
+                    <div id="tab-chart" class="tab-content hidden">
+                        <div class="chart-controls">
+                            <select id="chart-x" class="chart-select"><option>Select X axis</option></select>
+                            <select id="chart-y" class="chart-select"><option>Select Y axis</option></select>
+                            <select id="chart-type" class="chart-select">
+                                <option value="bar">Bar</option>
+                                <option value="line">Line</option>
+                            </select>
+                            <button id="render-chart-btn" class="btn primary-btn"><i class="fa-solid fa-play"></i> Plot</button>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="main-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: AI Chat -->
+            <section class="chat-panel glass-panel">
+                <div class="chat-header">
+                    <h3><i class="fa-solid fa-robot"></i> Ask the Analyst</h3>
+                    <span class="hint-text">Powered by on-device logic</span>
+                </div>
+
+                <div id="chat-messages" class="chat-messages">
+                    <div class="message system-msg anim">
+                        <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div class="msg-content">
+                            <p>Hi! I'm your <strong>local AI Data Analyst</strong>. Upload a CSV on the left and I'll analyze your data entirely on your device — no internet needed.</p>
+                            <p>You can ask things like:<br>
+                            • <em>"Summarize the data"</em><br>
+                            • <em>"Show statistics for Sales"</em><br>
+                            • <em>"Which row has the highest Revenue?"</em><br>
+                            • <em>"How many missing values?"</em><br>
+                            • <em>"What are the unique values in Category?"</em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <textarea id="chat-input" placeholder="Upload data first..." rows="1" disabled></textarea>
+                    <button id="send-btn" class="btn primary-btn icon-btn" disabled>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
